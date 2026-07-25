@@ -78,11 +78,14 @@ $test_count = $test_row['total'];
         <a class="active" href="dashboard.php">
             <img src="<?php echo $img; ?>/IMG_2.svg" alt=""> Dashboard
         </a>
-        <a href="my-appointments.php">
+        <a href="book-appointment.php">
             <img src="<?php echo $img; ?>/IMG_3.svg" alt=""> Appointments
         </a>
         <a href="medical-records.php">
             <img src="<?php echo $img; ?>/IMG_4.svg" alt=""> Medical Records
+        </a>
+        <a href="prescriptions.php">
+            <img src="<?php echo $img; ?>/IMG_5.svg" alt=""> Prescriptions
         </a>
         <a href="test-results.php">
             <img src="<?php echo $img; ?>/IMG_5.svg" alt=""> Test Results
@@ -106,7 +109,7 @@ $test_count = $test_row['total'];
                 <small>Patient</small>
             </div>
         </div>
-        <a class="pd-logout" href="../auth/logout.php">
+        <a class="pd-logout" href="../auth/logout.php?role=patient">
             <img src="<?php echo $img; ?>/IMG_9.svg" alt=""> Logout
         </a>
     </div>

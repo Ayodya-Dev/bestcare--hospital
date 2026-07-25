@@ -1,0 +1,384 @@
+/* Appointment Details page - hand-coded CSS (uses patient-dashboard.css sidebar) */
+
+.ad-content {
+    padding: 24px 28px 32px !important;
+}
+
+/* Page head */
+.ad-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.ad-head-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.ad-back {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #E2E3E7;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.ad-back svg { width: 16px; height: 16px; }
+.ad-back:hover { border-color: #016450; color: #016450; }
+
+.ad-head h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px;
+}
+
+.ad-ref {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.ad-ref b {
+    font-family: "Consolas", "Courier New", monospace;
+    color: #016450;
+    letter-spacing: 0.04em;
+}
+
+/* Two column layout */
+.ad-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+    align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .ad-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+.ad-card {
+    background: #fff;
+    border: 1px solid #E8E8EC;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.ad-card:last-child { margin-bottom: 0; }
+
+/* Doctor block */
+.ad-doc {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #F1F2F4;
+}
+
+.ad-doc-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 12px;
+    background: #016450;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.ad-doc-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.ad-doc-name h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.ad-doc .role {
+    margin: 0;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.ad-doc .dept {
+    margin: 3px 0 0;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.ad-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+
+.ad-pill.confirmed { background: #E9FCF5; color: #016450; border-color: #B0D6C9; }
+.ad-pill.pending { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+.ad-pill.completed { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+.ad-pill.cancelled { background: #FEF2F2; color: #B91C1C; border-color: #FECACA; }
+
+/* Meta rows (date / time / location) */
+.ad-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    padding-top: 20px;
+}
+
+@media (max-width: 620px) {
+    .ad-meta { grid-template-columns: minmax(0, 1fr); }
+}
+
+.ad-meta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ad-meta-item.full { grid-column: 1 / -1; }
+
+.ad-meta-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: #E9FCF5;
+    color: #016450;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ad-meta-icon svg { width: 17px; height: 17px; }
+
+.ad-meta-item .label {
+    margin: 0 0 3px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9ca3af;
+}
+
+.ad-meta-item .val {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Info cards row */
+.ad-info-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 620px) {
+    .ad-info-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+.ad-info {
+    background: #fff;
+    border: 1px solid #E8E8EC;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.ad-info-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: #016450;
+}
+
+.ad-info-head svg { width: 15px; height: 15px; }
+
+.ad-info-head span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.ad-info p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #4b5563;
+}
+
+/* Status journey */
+.ad-side-card {
+    background: #fff;
+    border: 1px solid #E8E8EC;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.ad-side-card h3 {
+    margin: 0 0 18px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.ad-journey {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ad-step {
+    position: relative;
+    padding: 0 0 24px 34px;
+}
+
+.ad-step:last-child { padding-bottom: 0; }
+
+.ad-step:before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 22px;
+    bottom: 0;
+    width: 2px;
+    background: #E5E7EB;
+}
+
+.ad-step:last-child:before { display: none; }
+.ad-step.done:before { background: #016450; }
+
+.ad-step-dot {
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #E5E7EB;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.ad-step-dot svg { width: 12px; height: 12px; }
+
+.ad-step.done .ad-step-dot {
+    background: #016450;
+    border-color: #016450;
+}
+
+.ad-step.current .ad-step-dot {
+    border-color: #016450;
+    box-shadow: 0 0 0 4px #E9FCF5;
+}
+
+.ad-step.cancelled .ad-step-dot {
+    background: #DC2626;
+    border-color: #DC2626;
+}
+
+.ad-step.cancelled:before { background: #FECACA; }
+
+.ad-step .title {
+    margin: 0 0 2px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.ad-step .desc {
+    margin: 0 0 4px;
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.ad-step .when {
+    margin: 0;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 11px;
+    color: #9ca3af;
+    letter-spacing: 0.03em;
+}
+
+.ad-step.todo .title { color: #6b7280; }
+
+/* Cancel action */
+.ad-cancel-card {
+    background: #fff;
+    border: 1px solid #E8E8EC;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.ad-cancel-btn {
+    width: 100%;
+    background: #EF6B6B;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ad-cancel-btn:hover { background: #DC2626; }
+
+.ad-cancel-note {
+    margin: 10px 0 0;
+    font-size: 11px;
+    color: #9ca3af;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.ad-alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 18px;
+    background: #ECFDF5;
+    color: #065F46;
+    border: 1px solid #A7F3D0;
+}
+
+.ad-alert.error {
+    background: #FEF2F2;
+    color: #991B1B;
+    border-color: #FECACA;
+}

@@ -13,7 +13,7 @@ if (!isset($_SESSION)) {
         <a href="/bestcare-hospital/index.php">Home</a>
         <a href="/bestcare-hospital/patient/dashboard.php">Dashboard</a>
         <a href="/bestcare-hospital/patient/book-appointment.php">Book</a>
-        <a href="/bestcare-hospital/patient/my-appointments.php">My Appointments</a>
-        <a href="/bestcare-hospital/auth/logout.php">Logout</a>
+        <a href="/bestcare-hospital/patient/book-appointment.php">Appointments</a>
+        <a href="/bestcare-hospital/auth/logout.php?role=patient">Logout</a>
     </div>
 </div>

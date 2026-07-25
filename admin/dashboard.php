@@ -20,7 +20,7 @@ if ($_SESSION['role'] != 'admin') {
         </div>
         <div class="nav-links">
             <a href="../index.php">Home</a>
-            <a href="../auth/logout.php">Logout</a>
+            <a href="../auth/logout.php?role=admin">Logout</a>
         </div>
     </div>
 

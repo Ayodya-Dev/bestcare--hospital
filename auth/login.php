@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . "/../includes/session_init.php";
 include("../includes/db.php");
 
 $error = "";
@@ -11,7 +11,8 @@ if (isset($_POST['submit'])) {
     if (strlen($username) == 0 || strlen($password) == 0) {
         $error = "Need to fill all the fields";
     } else {
-        $sql = "SELECT * FROM users WHERE username='$username' AND is_active=1";
+        $safe_username = mysqli_real_escape_string($conn, $username);
+        $sql = "SELECT * FROM users WHERE username='$safe_username' AND is_active=1";
         $result = mysqli_query($conn, $sql);
 
         if (!$result) {
@@ -22,14 +23,26 @@ if (isset($_POST['submit'])) {
             $row = mysqli_fetch_array($result);
 
             if (password_verify($password, $row['password_hash'])) {
+                $role = $row['role'];
+
+                // Start ONLY the role session (no public session first — that caused refresh logout)
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    session_write_close();
+                }
+
+                bestcare_start_session($role);
+
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['username'] = $row['username'];
-                $_SESSION['role'] = $row['role'];
+                $_SESSION['role'] = $role;
 
-                if ($row['role'] == 'admin') {
+                // Make sure session is written before redirect
+                session_write_close();
+
+                if ($role == 'admin') {
                     header("Location: ../admin/dashboard.php");
                     exit();
-                } elseif ($row['role'] == 'staff') {
+                } elseif ($role == 'staff') {
                     header("Location: ../staff/dashboard.php");
                     exit();
                 } else {
@@ -130,3 +143,8 @@ if (isset($_POST['submit'])) {
     <script src="/bestcare-hospital/assets/js/main.js?v=4"></script>
 </body>
 </html>
+<?php
+if (isset($conn)) {
+    mysqli_close($conn);
+}
+?>
