@@ -27,7 +27,8 @@ CREATE TABLE patients (
 CREATE TABLE departments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    description TEXT
+    description TEXT,
+    image_path VARCHAR(255) NULL
 );
 
 CREATE TABLE staff (
@@ -37,6 +38,8 @@ CREATE TABLE staff (
     specialization VARCHAR(100) NOT NULL,
     department_id INT NOT NULL,
     contact VARCHAR(20) NOT NULL,
+    staff_type ENUM('Doctor', 'Hospital Staff', 'Other') NOT NULL DEFAULT 'Doctor',
+    image_path VARCHAR(255) NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (department_id) REFERENCES departments(id)
 );
@@ -47,6 +50,7 @@ CREATE TABLE services (
     description TEXT,
     department_id INT NOT NULL,
     fee DECIMAL(10,2) NOT NULL,
+    image_path VARCHAR(255) NULL,
     FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 
@@ -91,6 +95,20 @@ CREATE TABLE prescriptions (
     medication VARCHAR(100) NOT NULL,
     dosage VARCHAR(100) NOT NULL,
     issued_date DATE NOT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patients(id),
+    FOREIGN KEY (staff_id) REFERENCES staff(id)
+);
+
+CREATE TABLE treatment_plans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    staff_id INT NOT NULL,
+    title VARCHAR(150) NOT NULL,
+    plan_details TEXT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NULL,
+    status ENUM('Active', 'Completed', 'On Hold') NOT NULL DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (patient_id) REFERENCES patients(id),
     FOREIGN KEY (staff_id) REFERENCES staff(id)
 );

@@ -1,0 +1,338 @@
+/* BestCare Hospital - Public Doctors page (Visily design, hand-coded CSS) */
+
+/* ============ Intro / hero band ============ */
+.doc-intro {
+    background: #fff;
+    border-bottom: 1px solid #DFE1E4;
+    padding: 64px 0 56px;
+}
+
+.doc-intro-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+}
+
+.doc-intro-copy {
+    flex: 1 1 420px;
+    max-width: 700px;
+}
+
+.doc-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 12px;
+    background: rgba(0, 122, 83, 0.05);
+    border: 1px solid rgba(0, 122, 83, 0.3);
+    border-radius: 13px;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #007A53;
+    margin-bottom: 16px;
+}
+
+.doc-intro-copy h1 {
+    font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #1D1F23;
+    margin: 0 0 16px;
+    line-height: 1.15;
+}
+
+.doc-intro-copy p {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #595C61;
+    margin: 0;
+    max-width: 42rem;
+}
+
+.doc-search-box {
+    flex: 0 0 320px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.doc-search-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1D1F23;
+}
+
+.doc-search-label img {
+    width: 16px;
+    height: 16px;
+}
+
+.doc-search-box input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    background: #F6F7F9;
+    border: 1px solid #DFE1E4;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #1D1F23;
+    outline: none;
+}
+
+.doc-search-box input::placeholder {
+    color: #595C61;
+}
+
+.doc-search-box input:focus {
+    border-color: #007A53;
+    background: #fff;
+}
+
+/* ============ Staff section ============ */
+.doc-section {
+    background: #F6F7F9;
+    padding: 64px 0 80px;
+}
+
+.doc-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.doc-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.doc-section-title::before {
+    content: "";
+    width: 6px;
+    height: 32px;
+    background: #007A53;
+    border-radius: 999px;
+    flex-shrink: 0;
+}
+
+.doc-section-title h2 {
+    font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1D1F23;
+    margin: 0;
+}
+
+.doc-count {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #595C61;
+}
+
+/* Grid */
+.doc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+}
+
+@media (min-width: 768px) {
+    .doc-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1100px) {
+    .doc-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+/* Card */
+.doc-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.doc-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.doc-card-photo {
+    position: relative;
+    height: 256px;
+    background: #EAECEE;
+}
+
+.doc-card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.doc-card-dept {
+    position: absolute;
+    top: 15px;
+    right: 14px;
+    padding: 0 10px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    background: #007A53;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.doc-card-body {
+    padding: 24px 24px 0;
+    flex-grow: 1;
+}
+
+.doc-card-body h3 {
+    font-family: "Outfit", "Plus Jakarta Sans", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: #1D1F23;
+    margin: 0 0 8px;
+    line-height: 1.1;
+}
+
+.doc-card-spec {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #007A53;
+}
+
+.doc-card-spec img {
+    width: 12px;
+    height: 12px;
+}
+
+.doc-card-bio {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #595C61;
+    font-style: italic;
+    margin: 0 0 16px;
+    min-height: 40px;
+}
+
+.doc-card-actions {
+    background: rgba(234, 236, 238, 0.35);
+    padding: 16px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.doc-btn-book {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background: #007A53;
+    color: #fff !important;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.doc-btn-book:hover {
+    background: #006344;
+}
+
+.doc-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px 16px;
+    font-family: "Inter", sans-serif;
+    color: #595C61;
+}
+
+/* ============ Trust strip ============ */
+.doc-trust {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid #DFE1E4;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+}
+
+@media (min-width: 768px) {
+    .doc-trust { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.doc-trust-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.doc-trust-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 122, 83, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.doc-trust-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.doc-trust-item strong {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1D1F23;
+    margin-bottom: 4px;
+}
+
+.doc-trust-item p {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #595C61;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .doc-intro { padding: 40px 0 36px; }
+    .doc-intro-copy h1 { font-size: 2.25rem; }
+    .doc-search-box { max-width: 100%; flex-basis: 100%; }
+    .doc-section { padding: 40px 0 56px; }
+}

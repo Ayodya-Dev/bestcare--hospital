@@ -54,16 +54,25 @@
 }
 
 .pd-side-logo {
-    width: 40px;
-    height: 40px;
-    background: #007A41;
+    width: 48px;
+    height: 48px;
+    background: #fff;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    padding: 4px;
+    box-sizing: border-box;
 }
 
-.pd-side-logo img { width: 24px; height: 24px; }
+.pd-side-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
 
 .pd-side-brand span {
     font-size: 17px;
@@ -78,8 +87,14 @@
     background: none;
     border: none;
     color: #fff;
-    font-size: 22px;
     cursor: pointer;
+    line-height: 0;
+    padding: 0;
+}
+
+.pd-menu-btn svg {
+    width: 22px;
+    height: 22px;
 }
 
 @media (min-width: 1024px) {

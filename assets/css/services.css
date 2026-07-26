@@ -1,0 +1,569 @@
+/* BestCare Hospital - Public Services page (Visily design, hand-coded CSS)
+   Nav + footer styles come from home.css; this file styles the page content. */
+
+/* ============ Hero ============ */
+.sv-hero {
+    position: relative;
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sv-hero-bg {
+    position: absolute;
+    inset: 0;
+}
+
+.sv-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.sv-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(29, 31, 35, 0.9) 0%, rgba(29, 31, 35, 0.6) 50%, rgba(29, 31, 35, 0.15) 100%);
+}
+
+.sv-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sv-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(1, 122, 77, 0.25);
+    border: 1px solid rgba(1, 122, 77, 0.4);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    margin-bottom: 24px;
+    width: fit-content;
+}
+
+.sv-hero-badge img {
+    width: 16px;
+    height: 16px;
+}
+
+.sv-hero-badge span {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #F6F7F9;
+}
+
+.sv-hero h1 {
+    font-size: 2.5rem;
+    color: #F6F7F9;
+    margin: 0 0 16px;
+    max-width: 30rem;
+    line-height: 1.15;
+}
+
+.sv-hero h1 .accent {
+    color: #35c98f;
+}
+
+.sv-hero-text {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: #DFE1E4;
+    max-width: 34rem;
+    margin: 0 0 40px;
+    line-height: 1.7;
+}
+
+.sv-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.sv-btn-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 32px;
+    background: #017A4D;
+    color: #F6F7F9;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    transition: background 0.25s ease;
+}
+
+.sv-btn-solid:hover {
+    background: #01633e;
+}
+
+.sv-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 32px;
+    border: 1px solid #F6F7F9;
+    color: #F6F7F9;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 12px;
+    text-decoration: none;
+    backdrop-filter: blur(4px);
+    transition: background 0.25s ease;
+}
+
+.sv-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============ Services section ============ */
+.sv-section {
+    padding: 96px 0;
+    background: #F6F7F9;
+}
+
+.sv-section-head {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 64px;
+}
+
+.sv-section-head::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #017A4D;
+}
+
+.sv-eyebrow {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #017A4D;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
+.sv-section-head h2 {
+    font-size: 2.25rem;
+    color: #1D1F23;
+    margin: 0 0 16px;
+}
+
+.sv-section-head p {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: #595C61;
+    max-width: 42rem;
+    margin: 0;
+    line-height: 1.7;
+}
+
+/* Grid */
+.sv-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+}
+
+@media (min-width: 768px) {
+    .sv-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1024px) {
+    .sv-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+/* Card */
+.sv-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(29, 31, 35, 0.1), 0 1px 2px rgba(29, 31, 35, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sv-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(29, 31, 35, 0.12);
+}
+
+.sv-card-img {
+    position: relative;
+    height: 224px;
+}
+
+.sv-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.sv-card-dept {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 5px 12px;
+    background: rgba(246, 247, 249, 0.92);
+    backdrop-filter: blur(4px);
+    border-radius: 999px;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #00643E;
+}
+
+.sv-card-body {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+.sv-card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.sv-card-icon {
+    width: 28px;
+    height: 28px;
+    background: rgba(1, 122, 77, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sv-card-icon img {
+    width: 16px;
+    height: 16px;
+}
+
+.sv-card-title h3 {
+    font-family: "Inter", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1D1F23;
+    margin: 0;
+}
+
+.sv-card-body > p {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #595C61;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.sv-card-foot {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(223, 225, 228, 0.6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sv-fee-label {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #595C61;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 2px;
+}
+
+.sv-fee {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: #017A4D;
+}
+
+.sv-details-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid #DFE1E4;
+    border-radius: 12px;
+    background: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1D1F23;
+    text-decoration: none;
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.sv-details-btn:hover {
+    background: #F6F7F9;
+    border-color: #c8cbcf;
+}
+
+.sv-details-btn img {
+    width: 14px;
+    height: 14px;
+}
+
+/* "More Services Coming" dashed card */
+.sv-card-more {
+    border: 2px dashed #DFE1E4;
+    border-radius: 16px;
+    background: rgba(234, 236, 238, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    min-height: 420px;
+}
+
+.sv-more-icon {
+    width: 64px;
+    height: 64px;
+    background: #EAECEE;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.sv-more-icon img {
+    width: 32px;
+    height: 32px;
+    opacity: 0.5;
+}
+
+.sv-card-more h3 {
+    font-family: "Inter", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #595C61;
+    margin: 0 0 12px;
+}
+
+.sv-card-more p {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #595C61;
+    max-width: 250px;
+    margin: 0 0 32px;
+    line-height: 1.6;
+}
+
+.sv-card-more a {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #017A4D;
+    text-decoration: none;
+}
+
+.sv-card-more a:hover {
+    text-decoration: underline;
+}
+
+/* ============ Features strip ============ */
+.sv-features {
+    padding: 64px 0;
+    background: rgba(234, 236, 238, 0.3);
+    border-top: 1px solid #DFE1E4;
+    border-bottom: 1px solid #DFE1E4;
+}
+
+.sv-features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+}
+
+@media (min-width: 640px) {
+    .sv-features-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1024px) {
+    .sv-features-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.sv-feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.sv-feature-icon {
+    width: 56px;
+    height: 56px;
+    background: #fff;
+    border: 1px solid #DFE1E4;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(29, 31, 35, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.sv-feature-icon img {
+    width: 28px;
+    height: 28px;
+}
+
+.sv-feature h4 {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1D1F23;
+    margin: 0 0 8px;
+}
+
+.sv-feature p {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #595C61;
+    margin: 0;
+}
+
+/* ============ CTA ============ */
+.sv-cta-section {
+    padding: 96px 0;
+    background: #F6F7F9;
+}
+
+.sv-cta {
+    position: relative;
+    background: #017A4D;
+    border-radius: 24px;
+    box-shadow: 0 20px 25px rgba(29, 31, 35, 0.1), 0 8px 10px rgba(29, 31, 35, 0.1);
+    overflow: hidden;
+    padding: 64px 32px;
+    text-align: center;
+}
+
+.sv-cta::before,
+.sv-cta::after {
+    content: "";
+    position: absolute;
+    width: 256px;
+    height: 256px;
+    border-radius: 50%;
+    filter: blur(64px);
+}
+
+.sv-cta::before {
+    top: -128px;
+    right: -128px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sv-cta::after {
+    bottom: -128px;
+    left: -128px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.sv-cta-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.sv-cta h2 {
+    font-size: 2.25rem;
+    color: #F6F7F9;
+    margin: 0 0 24px;
+}
+
+.sv-cta p {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: rgba(246, 247, 249, 0.9);
+    max-width: 48rem;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+}
+
+.sv-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.sv-btn-light {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 40px;
+    background: #CBEDD9;
+    color: #00643E;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background 0.25s ease;
+}
+
+.sv-btn-light:hover {
+    background: #b8e4ca;
+}
+
+.sv-btn-ghost-light {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 40px;
+    border: 1px solid #F6F7F9;
+    color: #F6F7F9;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background 0.25s ease;
+}
+
+.sv-btn-ghost-light:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============ Responsive tweaks ============ */
+@media (max-width: 640px) {
+    .sv-hero { height: 440px; }
+    .sv-hero h1 { font-size: 2rem; }
+    .sv-section { padding: 64px 0; }
+    .sv-cta-section { padding: 64px 0; }
+    .sv-cta h2 { font-size: 1.75rem; }
+}

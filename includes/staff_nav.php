@@ -15,7 +15,7 @@ if (!isset($active_page)) {
         </div>
     </div>
 
-    <button class="sd-menu-btn" id="sdMenuBtn" type="button">☰</button>
+    <button class="sd-menu-btn" id="sdMenuBtn" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
 
     <nav class="sd-nav" id="sdNav">
         <a class="<?php if ($active_page == 'dashboard') echo 'active'; ?>" href="dashboard.php">
@@ -34,13 +34,13 @@ if (!isset($active_page)) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6v4H9z"></path><path d="M8 7h8v14H8z"></path><line x1="10" y1="12" x2="14" y2="12"></line><line x1="12" y1="10" x2="12" y2="14"></line></svg>
             Prescriptions
         </a>
+        <a class="<?php if ($active_page == 'treatment_plans') echo 'active'; ?>" href="treatment-plans.php">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"></path><rect x="9" y="3" width="6" height="4" rx="1"></rect><line x1="9" y1="12" x2="15" y2="12"></line><line x1="9" y1="16" x2="13" y2="16"></line></svg>
+            Treatment Plans
+        </a>
         <a class="<?php if ($active_page == 'tests') echo 'active'; ?>" href="add-test-result.php">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6l1 4H8z"></path><path d="M10 7v10a2 2 0 0 0 4 0V7"></path></svg>
             Test Results
-        </a>
-        <a class="<?php if ($active_page == 'queries') echo 'active'; ?>" href="queries.php">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            Patient Queries
         </a>
     </nav>
 

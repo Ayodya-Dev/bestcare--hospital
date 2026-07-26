@@ -60,7 +60,7 @@ $result = mysqli_query($conn, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Appointments - Doctor Portal</title>
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/staff.css?v=1">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/staff.css?v=3">
 </head>
 <body class="sd-body">
 
@@ -156,6 +156,7 @@ document.getElementById('sdMenuBtn').addEventListener('click', function () {
     document.getElementById('sdSideFooter').classList.toggle('open');
 });
 </script>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>

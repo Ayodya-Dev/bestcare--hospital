@@ -10,7 +10,7 @@ if (!isset($staff) || !isset($staff_id)) {
     $st_result = mysqli_query($conn, $st_sql);
 
     if (!$st_result || mysqli_num_rows($st_result) == 0) {
-        die("Staff profile not found.");
+        bestcare_fail_page("Staff profile not found. Please contact the administrator.");
     }
 
     $staff = mysqli_fetch_array($st_result);

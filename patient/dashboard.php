@@ -13,7 +13,7 @@ $user_id = $_SESSION['user_id'];
 $p_sql = "SELECT * FROM patients WHERE user_id=$user_id";
 $p_result = mysqli_query($conn, $p_sql);
 if (!$p_result || mysqli_num_rows($p_result) == 0) {
-    die("Patient profile not found.");
+    bestcare_fail_page("Patient profile not found. Please contact the hospital.");
 }
 $patient = mysqli_fetch_array($p_result);
 $patient_id = $patient['id'];
@@ -60,19 +60,19 @@ $test_count = $test_row['total'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard - BestCare Hospital</title>
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=1">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=16">
 </head>
 <body class="pd-body">
 
 <aside class="pd-sidebar">
     <div class="pd-side-brand">
         <div class="pd-side-logo">
-            <img src="<?php echo $img; ?>/IMG_1.svg" alt="Logo">
+            <img src="/bestcare-hospital/assets/images/bestcarelogo.png" alt="Logo">
         </div>
         <span>BestCare Hospital</span>
     </div>
 
-    <button class="pd-menu-btn" id="pdMenuBtn" type="button">☰</button>
+    <button class="pd-menu-btn" id="pdMenuBtn" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
 
     <nav class="pd-nav" id="pdNav">
         <a class="active" href="dashboard.php">
@@ -90,8 +90,17 @@ $test_count = $test_row['total'];
         <a href="test-results.php">
             <img src="<?php echo $img; ?>/IMG_5.svg" alt=""> Test Results
         </a>
+        <a href="treatment-plans.php">
+            <img src="<?php echo $img; ?>/IMG_4.svg" alt=""> Treatment Plans
+        </a>
         <a href="my-queries.php">
             <img src="<?php echo $img; ?>/IMG_6.svg" alt=""> Queries
+        </a>
+        <a href="edit-profile.php">
+            <img src="<?php echo $img; ?>/IMG_8.svg" alt=""> Edit Profile
+        </a>
+        <a href="change-password.php">
+            <img src="<?php echo $img; ?>/IMG_8.svg" alt=""> Change Password
         </a>
         <a href="../index.php">
             <img src="<?php echo $img; ?>/IMG_7.svg" alt=""> Website
@@ -99,9 +108,6 @@ $test_count = $test_row['total'];
     </nav>
 
     <div class="pd-side-footer" id="pdSideFooter">
-        <a class="pd-settings" href="dashboard.php">
-            <img src="<?php echo $img; ?>/IMG_8.svg" alt=""> Settings
-        </a>
         <div class="pd-profile">
             <div class="pd-avatar"><?php echo htmlspecialchars($initials); ?></div>
             <div>
@@ -341,7 +347,7 @@ $test_count = $test_row['total'];
                         echo '<p class="doc">' . htmlspecialchars($r['doctor_name']) . '</p>';
                         echo '<div class="pd-record-foot">';
                         echo '<span class="date">' . htmlspecialchars($r['visit_date']) . '</span>';
-                        echo '<a href="medical-records.php">View Report <img src="' . $img . '/IMG_20.svg" alt=""></a>';
+                        echo '<a href="record-details.php?id=' . (int)$r['id'] . '">View Report <img src="' . $img . '/IMG_20.svg" alt=""></a>';
                         echo '</div></div>';
                     }
                 } else {
@@ -369,6 +375,7 @@ document.getElementById('pdMenuBtn').addEventListener('click', function () {
     document.getElementById('pdSideFooter').classList.toggle('open');
 });
 </script>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>

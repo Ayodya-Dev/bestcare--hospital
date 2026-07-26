@@ -15,7 +15,7 @@ $p_sql = "SELECT * FROM patients WHERE user_id=$user_id";
 $p_result = mysqli_query($conn, $p_sql);
 
 if (!$p_result || mysqli_num_rows($p_result) == 0) {
-    die("Patient profile not found.");
+    bestcare_fail_page("Patient profile not found. Please contact the hospital.");
 }
 
 $patient = mysqli_fetch_array($p_result);
@@ -60,7 +60,7 @@ $sql = "SELECT a.*, s.name AS service_name, s.description AS service_desc, s.fee
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
-    die("Query error: " . mysqli_error($conn));
+    bestcare_fail_page("Could not load appointment details. Please try again.");
 }
 
 if (mysqli_num_rows($result) == 0) {
@@ -75,7 +75,7 @@ if (mysqli_num_rows($result) == 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Details - BestCare Hospital</title>
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=15">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=16">
     <link rel="stylesheet" href="/bestcare-hospital/assets/css/appointment-details.css?v=1">
 </head>
 <body class="pd-body">
@@ -83,12 +83,12 @@ if (mysqli_num_rows($result) == 0) {
 <aside class="pd-sidebar">
     <div class="pd-side-brand">
         <div class="pd-side-logo">
-            <img src="<?php echo $dash; ?>/IMG_1.svg" alt="Logo">
+            <img src="/bestcare-hospital/assets/images/bestcarelogo.png" alt="Logo">
         </div>
         <span>BestCare Hospital</span>
     </div>
 
-    <button class="pd-menu-btn" id="pdMenuBtn" type="button">☰</button>
+    <button class="pd-menu-btn" id="pdMenuBtn" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
 
     <nav class="pd-nav" id="pdNav">
         <a href="dashboard.php">
@@ -106,8 +106,17 @@ if (mysqli_num_rows($result) == 0) {
         <a href="test-results.php">
             <img src="<?php echo $dash; ?>/IMG_5.svg" alt=""> Test Results
         </a>
+        <a href="treatment-plans.php">
+            <img src="<?php echo $dash; ?>/IMG_4.svg" alt=""> Treatment Plans
+        </a>
         <a href="my-queries.php">
             <img src="<?php echo $dash; ?>/IMG_6.svg" alt=""> Queries
+        </a>
+        <a href="edit-profile.php">
+            <img src="<?php echo $dash; ?>/IMG_8.svg" alt=""> Edit Profile
+        </a>
+        <a href="change-password.php">
+            <img src="<?php echo $dash; ?>/IMG_8.svg" alt=""> Change Password
         </a>
         <a href="../index.php">
             <img src="<?php echo $dash; ?>/IMG_7.svg" alt=""> Website
@@ -115,9 +124,6 @@ if (mysqli_num_rows($result) == 0) {
     </nav>
 
     <div class="pd-side-footer" id="pdSideFooter">
-        <a class="pd-settings" href="dashboard.php">
-            <img src="<?php echo $dash; ?>/IMG_8.svg" alt=""> Settings
-        </a>
         <div class="pd-profile">
             <div class="pd-avatar"><?php echo htmlspecialchars($initials); ?></div>
             <div>
@@ -376,6 +382,7 @@ document.getElementById('pdMenuBtn').addEventListener('click', function () {
     document.getElementById('pdSideFooter').classList.toggle('open');
 });
 </script>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>

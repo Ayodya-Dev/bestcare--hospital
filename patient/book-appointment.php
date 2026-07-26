@@ -17,7 +17,7 @@ $p_sql = "SELECT * FROM patients WHERE user_id=$user_id";
 $p_result = mysqli_query($conn, $p_sql);
 
 if (!$p_result || mysqli_num_rows($p_result) == 0) {
-    die("Patient profile not found.");
+    bestcare_fail_page("Patient profile not found. Please contact the hospital.");
 }
 
 $patient = mysqli_fetch_array($p_result);
@@ -37,13 +37,33 @@ while ($s = mysqli_fetch_array($services_result)) {
     $services[] = $s;
 }
 
-$doctors_result = mysqli_query($conn, "SELECT st.id, st.full_name, st.specialization, d.name AS department_name
-                                       FROM staff st, departments d
+$doctors_result = mysqli_query($conn, "SELECT st.id, st.full_name, st.specialization, st.image_path, d.name AS department_name
+                                       FROM staff st, departments d, users u
                                        WHERE st.department_id = d.id
+                                       AND st.user_id = u.id
+                                       AND u.role = 'staff'
+                                       AND u.is_active = 1
+                                       AND (st.staff_type = 'Doctor' OR st.staff_type IS NULL OR st.staff_type = '')
                                        ORDER BY st.full_name");
 $doctors = array();
-while ($d = mysqli_fetch_array($doctors_result)) {
-    $doctors[] = $d;
+if ($doctors_result) {
+    while ($d = mysqli_fetch_array($doctors_result)) {
+        $doctors[] = $d;
+    }
+} else {
+    // Fallback if staff_type / image_path column is missing
+    $doctors_result = mysqli_query($conn, "SELECT st.id, st.full_name, st.specialization, d.name AS department_name
+                                           FROM staff st, departments d, users u
+                                           WHERE st.department_id = d.id
+                                           AND st.user_id = u.id
+                                           AND u.role = 'staff'
+                                           AND u.is_active = 1
+                                           ORDER BY st.full_name");
+    if ($doctors_result) {
+        while ($d = mysqli_fetch_array($doctors_result)) {
+            $doctors[] = $d;
+        }
+    }
 }
 
 $booked_result = mysqli_query($conn, "SELECT staff_id, appointment_date, appointment_time
@@ -72,6 +92,18 @@ if (isset($_POST['book_submit'])) {
     } elseif ($appointment_date < date('Y-m-d')) {
         $error = "Appointment date cannot be in the past";
     } else {
+        $staff_id = (int)$staff_id;
+        $service_id = (int)$service_id;
+
+        // Block booking with deactivated doctors
+        $active_doc = mysqli_query($conn, "SELECT st.id FROM staff st, users u
+                                           WHERE st.id = $staff_id
+                                           AND st.user_id = u.id
+                                           AND u.role = 'staff'
+                                           AND u.is_active = 1");
+        if (!$active_doc || mysqli_num_rows($active_doc) == 0) {
+            $error = "This doctor is not available. Please choose another doctor.";
+        } else {
         $check_sql = "SELECT * FROM appointments
                       WHERE staff_id=$staff_id
                       AND appointment_date='$appointment_date'
@@ -87,10 +119,11 @@ if (isset($_POST['book_submit'])) {
             $result = mysqli_query($conn, $sql);
 
             if (!$result) {
-                die("Could not book appointment: " . mysqli_error($conn));
+                $error = bestcare_db_error($conn, "Could not book appointment. Please try again.");
+            } else {
+                $success = "Appointment booked successfully! Status: Pending";
             }
-
-            $success = "Appointment booked successfully! Status: Pending";
+        }
         }
     }
 }
@@ -98,6 +131,12 @@ if (isset($_POST['book_submit'])) {
 $service_charge = 5.00;
 $today = date('Y-m-d');
 $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
+$default_doctor_photo = $doctor_photos[0];
+if (count($doctors) > 0) {
+    if (isset($doctors[0]['image_path']) && $doctors[0]['image_path'] != '') {
+        $default_doctor_photo = $doctors[0]['image_path'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,7 +144,7 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Appointment - BestCare Hospital</title>
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=15">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=16">
     <link rel="stylesheet" href="/bestcare-hospital/assets/css/book-appointment.css?v=15">
 </head>
 <body class="pd-body">
@@ -113,12 +152,12 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
 <aside class="pd-sidebar">
     <div class="pd-side-brand">
         <div class="pd-side-logo">
-            <img src="<?php echo $dash; ?>/IMG_1.svg" alt="Logo">
+            <img src="/bestcare-hospital/assets/images/bestcarelogo.png" alt="Logo">
         </div>
         <span>BestCare Hospital</span>
     </div>
 
-    <button class="pd-menu-btn" id="pdMenuBtn" type="button">☰</button>
+    <button class="pd-menu-btn" id="pdMenuBtn" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
 
     <nav class="pd-nav" id="pdNav">
         <a href="dashboard.php">
@@ -136,8 +175,17 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
         <a href="test-results.php">
             <img src="<?php echo $dash; ?>/IMG_5.svg" alt=""> Test Results
         </a>
+        <a href="treatment-plans.php">
+            <img src="<?php echo $dash; ?>/IMG_4.svg" alt=""> Treatment Plans
+        </a>
         <a href="my-queries.php">
             <img src="<?php echo $dash; ?>/IMG_6.svg" alt=""> Queries
+        </a>
+        <a href="edit-profile.php">
+            <img src="<?php echo $dash; ?>/IMG_8.svg" alt=""> Edit Profile
+        </a>
+        <a href="change-password.php">
+            <img src="<?php echo $dash; ?>/IMG_8.svg" alt=""> Change Password
         </a>
         <a href="../index.php">
             <img src="<?php echo $dash; ?>/IMG_7.svg" alt=""> Website
@@ -145,9 +193,6 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
     </nav>
 
     <div class="pd-side-footer" id="pdSideFooter">
-        <a class="pd-settings" href="dashboard.php">
-            <img src="<?php echo $dash; ?>/IMG_8.svg" alt=""> Settings
-        </a>
         <div class="pd-profile">
             <div class="pd-avatar"><?php echo htmlspecialchars($initials); ?></div>
             <div>
@@ -249,7 +294,11 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
                             <?php
                             $i = 0;
                             foreach ($doctors as $d) {
-                                $photo = $doctor_photos[$i % count($doctor_photos)];
+                                if (isset($d['image_path']) && $d['image_path'] != '') {
+                                    $photo = $d['image_path'];
+                                } else {
+                                    $photo = $doctor_photos[$i % count($doctor_photos)];
+                                }
                                 $active = ($i === 0) ? ' active' : '';
                                 $checked = ($i === 0) ? ' checked' : '';
                                 echo '<label class="ba-doc' . $active . '" data-name="' . htmlspecialchars($d['full_name']) . '" data-spec="' . htmlspecialchars($d['specialization']) . '" data-photo="' . htmlspecialchars($photo) . '">';
@@ -259,7 +308,7 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
                                 echo '<div class="ba-doc-info">';
                                 echo '<p class="name">' . htmlspecialchars($d['full_name']) . '</p>';
                                 echo '<p class="spec">' . htmlspecialchars($d['specialization']) . '</p>';
-                                echo '<div class="ba-doc-tags"><span class="exp">' . htmlspecialchars($d['department_name']) . '</span><span class="rate">⭐ 4.9</span></div>';
+                                echo '<div class="ba-doc-tags"><span class="exp">' . htmlspecialchars($d['department_name']) . '</span><span class="rate"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.1 8.6 22 9.6 17 14.5 18.2 21.4 12 18.1 5.8 21.4 7 14.5 2 9.6 8.9 8.6 12 2"></polygon></svg> 4.9</span></div>';
                                 echo '</div></label>';
                                 $i++;
                             }
@@ -280,9 +329,13 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
                                 <label class="ba-label">Select Preferred Date</label>
                                 <div class="ba-cal-box">
                                     <div class="ba-cal-nav">
-                                        <button type="button" id="calPrev">‹</button>
-                                        <h3 id="calMonthLabel">—</h3>
-                                        <button type="button" id="calNext">›</button>
+                                        <button type="button" id="calPrev" aria-label="Previous month">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                        </button>
+                                        <h3 id="calMonthLabel"></h3>
+                                        <button type="button" id="calNext" aria-label="Next month">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                        </button>
                                     </div>
                                     <div class="ba-cal-grid" id="calGrid"></div>
                                 </div>
@@ -325,7 +378,7 @@ $doctor_photos = array($img . '/IMG_19.webp', $img . '/IMG_20.webp');
                         <p class="ba-summary-sub">Review your appointment details</p>
 
                         <div class="ba-sum-doc">
-                            <img id="sumPhoto" src="<?php echo $doctor_photos[0]; ?>" alt="">
+                            <img id="sumPhoto" src="<?php echo htmlspecialchars($default_doctor_photo); ?>" alt="">
                             <div>
                                 <p class="tiny">Specialist</p>
                                 <p class="name" id="sumDoctor">Select a specialist</p>
@@ -594,6 +647,7 @@ document.getElementById('pdMenuBtn').addEventListener('click', function () {
     renderSlots();
 })();
 </script>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>

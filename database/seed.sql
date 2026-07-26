@@ -16,9 +16,9 @@ INSERT INTO departments (name, description) VALUES
 ('Laboratory', 'Blood tests and lab investigations'),
 ('Emergency', '24-hour emergency care');
 
-INSERT INTO staff (user_id, full_name, specialization, department_id, contact) VALUES
-(2, 'Dr. Nimal Silva', 'General Physician', 1, '0712345678'),
-(3, 'Dr. Kamala Fernando', 'Cardiologist', 2, '0723456789');
+INSERT INTO staff (user_id, full_name, specialization, department_id, contact, staff_type) VALUES
+(2, 'Dr. Nimal Silva', 'General Physician', 1, '0712345678', 'Doctor'),
+(3, 'Dr. Kamala Fernando', 'Cardiologist', 2, '0723456789', 'Doctor');
 
 INSERT INTO patients (user_id, full_name, dob, gender, contact, address) VALUES
 (4, 'Saman Perera', '1995-05-12', 'Male', '0771234567', 'No 12, Main Street, Matara');

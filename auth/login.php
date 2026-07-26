@@ -16,10 +16,8 @@ if (isset($_POST['submit'])) {
         $result = mysqli_query($conn, $sql);
 
         if (!$result) {
-            die("Query error: " . mysqli_error($conn));
-        }
-
-        if (mysqli_num_rows($result) > 0) {
+            $error = bestcare_db_error($conn, "Login is temporarily unavailable. Please try again.");
+        } elseif (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_array($result);
 
             if (password_verify($password, $row['password_hash'])) {
@@ -78,7 +76,7 @@ if (isset($_POST['submit'])) {
             <?php if ($error != "") { ?>
                 <div class="error-msg">
                     <img src="/bestcare-hospital/assets/images/IMG_2.svg" alt="Alert">
-                    <span><?php echo $error; ?></span>
+                    <span><?php echo htmlspecialchars($error); ?></span>
                 </div>
             <?php } ?>
 
@@ -141,6 +139,7 @@ if (isset($_POST['submit'])) {
     </div>
 
     <script src="/bestcare-hospital/assets/js/main.js?v=4"></script>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>
 <?php

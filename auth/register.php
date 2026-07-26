@@ -6,13 +6,13 @@ $error = "";
 $success = "";
 
 if (isset($_POST['submit'])) {
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
-    $full_name = $_POST['full_name'];
+    $full_name = trim($_POST['full_name']);
     $dob = $_POST['dob'];
     $gender = $_POST['gender'];
-    $contact = $_POST['contact'];
-    $address = $_POST['address'];
+    $contact = trim($_POST['contact']);
+    $address = trim($_POST['address']);
 
     if (strlen($username) == 0 || strlen($password) == 0 || strlen($full_name) == 0 ||
         strlen($dob) == 0 || strlen($gender) == 0 || strlen($contact) == 0 || strlen($address) == 0) {
@@ -21,34 +21,51 @@ if (isset($_POST['submit'])) {
         $error = "Password must be at least 8 characters";
     } elseif (!preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
         $error = "Password must have a mix of letters and numbers";
+    } elseif ($gender != 'Male' && $gender != 'Female' && $gender != 'Other') {
+        $error = "Please select a valid gender.";
     } else {
-        $check_sql = "SELECT * FROM users WHERE username='$username'";
+        $safe_username = mysqli_real_escape_string($conn, $username);
+        $safe_name = mysqli_real_escape_string($conn, $full_name);
+        $safe_dob = mysqli_real_escape_string($conn, $dob);
+        $safe_gender = mysqli_real_escape_string($conn, $gender);
+        $safe_contact = mysqli_real_escape_string($conn, $contact);
+        $safe_address = mysqli_real_escape_string($conn, $address);
+
+        $check_sql = "SELECT id FROM users WHERE username='$safe_username'";
         $check_result = mysqli_query($conn, $check_sql);
 
-        if (mysqli_num_rows($check_result) > 0) {
+        if (!$check_result) {
+            $error = bestcare_db_error($conn, "Could not check username. Please try again.");
+        } elseif (mysqli_num_rows($check_result) > 0) {
             $error = "Username already exists. Please choose another.";
         } else {
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $safe_hash = mysqli_real_escape_string($conn, $password_hash);
+
+            mysqli_begin_transaction($conn);
 
             $sql1 = "INSERT INTO users (username, password_hash, role)
-                     VALUES ('$username', '$password_hash', 'patient')";
+                     VALUES ('$safe_username', '$safe_hash', 'patient')";
             $result1 = mysqli_query($conn, $sql1);
 
             if (!$result1) {
-                die("Could not enter user data: " . mysqli_error($conn));
+                mysqli_rollback($conn);
+                $error = bestcare_db_error($conn, "Could not create account. Please try again.");
+            } else {
+                $user_id = mysqli_insert_id($conn);
+
+                $sql2 = "INSERT INTO patients (user_id, full_name, dob, gender, contact, address)
+                         VALUES ($user_id, '$safe_name', '$safe_dob', '$safe_gender', '$safe_contact', '$safe_address')";
+                $result2 = mysqli_query($conn, $sql2);
+
+                if (!$result2) {
+                    mysqli_rollback($conn);
+                    $error = bestcare_db_error($conn, "Could not save patient details. Please try again.");
+                } else {
+                    mysqli_commit($conn);
+                    $success = "Registered successfully! You can now login.";
+                }
             }
-
-            $user_id = mysqli_insert_id($conn);
-
-            $sql2 = "INSERT INTO patients (user_id, full_name, dob, gender, contact, address)
-                     VALUES ($user_id, '$full_name', '$dob', '$gender', '$contact', '$address')";
-            $result2 = mysqli_query($conn, $sql2);
-
-            if (!$result2) {
-                die("Could not enter patient data: " . mysqli_error($conn));
-            }
-
-            $success = "Registered successfully! You can now login.";
         }
     }
 }
@@ -73,12 +90,12 @@ if (isset($_POST['submit'])) {
             <?php if ($error != "") { ?>
                 <div class="error-msg">
                     <img src="/bestcare-hospital/assets/images/IMG_2.svg" alt="Alert">
-                    <span><?php echo $error; ?></span>
+                    <span><?php echo htmlspecialchars($error); ?></span>
                 </div>
             <?php } ?>
 
             <?php if ($success != "") { ?>
-                <div class="success-msg"><?php echo $success; ?></div>
+                <div class="success-msg"><?php echo htmlspecialchars($success); ?></div>
             <?php } ?>
 
             <div class="auth-card register-card">
@@ -89,7 +106,8 @@ if (isset($_POST['submit'])) {
                         <label for="username">Username</label>
                         <div class="input-wrap">
                             <img class="input-icon" src="/bestcare-hospital/assets/images/IMG_5.svg" alt="">
-                            <input type="text" name="username" id="username" placeholder="name@example.com" required>
+                            <input type="text" name="username" id="username" placeholder="name@example.com" required
+                                   value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>">
                         </div>
 
                         <label for="password">Password</label>
@@ -110,14 +128,16 @@ if (isset($_POST['submit'])) {
                         <label for="full_name">Full Name</label>
                         <div class="input-wrap">
                             <img class="input-icon" src="/bestcare-hospital/assets/images/IMG_3.svg" alt="">
-                            <input type="text" name="full_name" id="full_name" placeholder="John Doe" required>
+                            <input type="text" name="full_name" id="full_name" placeholder="John Doe" required
+                                   value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name']) : ''; ?>">
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="dob">Date of Birth</label>
                                 <div class="input-wrap no-icon">
-                                    <input type="date" name="dob" id="dob" required>
+                                    <input type="date" name="dob" id="dob" required
+                                           value="<?php echo isset($_POST['dob']) ? htmlspecialchars($_POST['dob']) : ''; ?>">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -125,9 +145,9 @@ if (isset($_POST['submit'])) {
                                 <div class="input-wrap no-icon">
                                     <select name="gender" id="gender" required>
                                         <option value="">Select</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
+                                        <option value="Male"<?php if (isset($_POST['gender']) && $_POST['gender'] == 'Male') echo ' selected'; ?>>Male</option>
+                                        <option value="Female"<?php if (isset($_POST['gender']) && $_POST['gender'] == 'Female') echo ' selected'; ?>>Female</option>
+                                        <option value="Other"<?php if (isset($_POST['gender']) && $_POST['gender'] == 'Other') echo ' selected'; ?>>Other</option>
                                     </select>
                                 </div>
                             </div>
@@ -135,12 +155,13 @@ if (isset($_POST['submit'])) {
 
                         <label for="contact">Contact Number</label>
                         <div class="input-wrap no-icon">
-                            <input type="text" name="contact" id="contact" placeholder="+94 77 123 4567" required>
+                            <input type="text" name="contact" id="contact" placeholder="+94 77 123 4567" required
+                                   value="<?php echo isset($_POST['contact']) ? htmlspecialchars($_POST['contact']) : ''; ?>">
                         </div>
 
                         <label for="address">Residential Address</label>
                         <div class="input-wrap no-icon textarea-wrap">
-                            <textarea name="address" id="address" rows="3" placeholder="Street, City, State, ZIP" required></textarea>
+                            <textarea name="address" id="address" rows="3" placeholder="Street, City, State, ZIP" required><?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?></textarea>
                         </div>
 
                         <button type="submit" name="submit" value="Register" class="btn-primary">Register</button>
@@ -161,5 +182,6 @@ if (isset($_POST['submit'])) {
     </div>
 
     <script src="/bestcare-hospital/assets/js/main.js?v=4"></script>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>

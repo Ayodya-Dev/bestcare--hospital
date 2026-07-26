@@ -1,0 +1,469 @@
+/* BestCare Hospital - Contact / Query page (Visily design, hand-coded) */
+
+.ct-hero {
+    position: relative;
+    height: 340px;
+    overflow: hidden;
+}
+
+.ct-hero-bg {
+    position: absolute;
+    inset: 0;
+}
+
+.ct-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.35);
+    display: block;
+}
+
+.ct-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.45) 55%, rgba(15, 23, 42, 0.2) 100%);
+}
+
+.ct-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ct-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: rgba(1, 122, 77, 0.2);
+    border: 1px solid rgba(1, 122, 77, 0.45);
+    border-radius: 999px;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #CBEDD9;
+    margin-bottom: 16px;
+    width: fit-content;
+}
+
+.ct-hero h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    margin: 0 0 12px;
+    max-width: 28rem;
+}
+
+.ct-hero-text {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #E5E7EB;
+    margin: 0;
+    max-width: 36rem;
+}
+
+/* Care coordinator strip */
+.ct-coord-wrap {
+    max-width: 1280px;
+    margin: -48px auto 0;
+    padding: 0 24px;
+    position: relative;
+    z-index: 3;
+}
+
+.ct-coord {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    padding: 24px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+}
+
+.ct-coord-photo {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid #E9FCF5;
+}
+
+.ct-coord-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ct-coord-copy {
+    flex: 1 1 280px;
+}
+
+.ct-coord-copy h2 {
+    font-family: "Inter", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1D1F23;
+    margin: 0 0 6px;
+}
+
+.ct-coord-copy p {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #595C61;
+    margin: 0 0 12px;
+    line-height: 1.5;
+}
+
+.ct-coord-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+}
+
+.ct-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #016450;
+}
+
+.ct-check-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #E9FCF5;
+    color: #017A4D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ct-check-dot svg {
+    width: 10px;
+    height: 10px;
+}
+
+/* Main two-column */
+.ct-main {
+    padding: 56px 0 80px;
+    background: #F6F7F9;
+}
+
+.ct-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+}
+
+@media (min-width: 900px) {
+    .ct-grid {
+        grid-template-columns: 1fr 1.1fr;
+        gap: 40px;
+        align-items: start;
+    }
+}
+
+.ct-details h2,
+.ct-form-card h2 {
+    font-family: "Inter", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1D1F23;
+    margin: 0 0 8px;
+}
+
+.ct-details > .lead,
+.ct-form-card > .lead {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #595C61;
+    margin: 0 0 28px;
+    line-height: 1.6;
+}
+
+.ct-info-list {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ct-info-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.ct-info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #E9FCF5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ct-info-icon img {
+    width: 18px;
+    height: 18px;
+}
+
+.ct-info-item .label {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B7280;
+    margin-bottom: 2px;
+}
+
+.ct-info-item .value {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #1D1F23;
+    font-weight: 500;
+}
+
+.ct-emergency {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.ct-emergency .ico {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: #FEE2E2;
+    color: #DC2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ct-emergency .ico svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ct-emergency strong {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #B91C1C;
+    margin-bottom: 2px;
+}
+
+.ct-emergency p {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #7F1D1D;
+}
+
+.ct-portal {
+    background: #E9FCF5;
+    border: 1px solid #B0D6C9;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.ct-portal strong {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #014436;
+    margin-bottom: 12px;
+}
+
+.ct-portal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #017A4D;
+    color: #fff !important;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.ct-portal-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+.ct-portal-btn:hover {
+    background: #01633e;
+}
+
+/* Form card */
+.ct-form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    padding: 28px;
+}
+
+.ct-notice {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: #92400E;
+    line-height: 1.5;
+}
+
+.ct-notice .ico {
+    color: #B45309;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.ct-notice .ico svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ct-notice a {
+    color: #016450;
+    font-weight: 700;
+}
+
+.ct-form label {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B7280;
+    margin-bottom: 8px;
+}
+
+.ct-form .field {
+    margin-bottom: 18px;
+}
+
+.ct-form input,
+.ct-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #DFE1E4;
+    background: #F6F7F9;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: #1D1F23;
+    outline: none;
+}
+
+.ct-form textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.ct-form input:focus,
+.ct-form textarea:focus {
+    border-color: #017A4D;
+    background: #fff;
+}
+
+.ct-submit {
+    width: 100%;
+    border: none;
+    background: #017A4D;
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.ct-submit:hover {
+    background: #01633e;
+}
+
+.ct-form-note {
+    margin: 14px 0 0;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+.ct-alert {
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+}
+
+.ct-alert.ok {
+    background: #E9FCF5;
+    color: #014436;
+    border: 1px solid #B0D6C9;
+}
+
+.ct-alert.err {
+    background: #FEF2F2;
+    color: #991B1B;
+    border: 1px solid #FECACA;
+}
+
+@media (max-width: 640px) {
+    .ct-hero { height: 300px; }
+    .ct-hero h1 { font-size: 2rem; }
+    .ct-coord-wrap { margin-top: -36px; }
+    .ct-form-card { padding: 20px; }
+}

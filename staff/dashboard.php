@@ -30,9 +30,10 @@ $c3 = mysqli_query($conn, "SELECT COUNT(*) AS c FROM appointments
 $up_row = mysqli_fetch_array($c3);
 $count_upcoming = $up_row['c'];
 
-$c4 = mysqli_query($conn, "SELECT COUNT(*) AS c FROM queries WHERE status='Open'");
-$q_row = mysqli_fetch_array($c4);
-$count_queries = $q_row['c'];
+$c4 = mysqli_query($conn, "SELECT COUNT(*) AS c FROM appointments
+                           WHERE staff_id=$staff_id AND status='Completed'");
+$done_row = mysqli_fetch_array($c4);
+$count_completed = $done_row['c'];
 
 $upcoming_sql = "SELECT a.*, p.full_name AS patient_name, s.name AS service_name
                  FROM appointments a, patients p, services s
@@ -51,7 +52,7 @@ $upcoming = mysqli_query($conn, $upcoming_sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Dashboard - BestCare Hospital</title>
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/staff.css?v=1">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/staff.css?v=5">
 </head>
 <body class="sd-body">
 
@@ -78,8 +79,8 @@ $upcoming = mysqli_query($conn, $upcoming_sql);
                 <p class="value"><?php echo $count_upcoming; ?></p>
             </div>
             <div class="sd-stat">
-                <p class="label">Open Queries</p>
-                <p class="value"><?php echo $count_queries; ?></p>
+                <p class="label">Completed</p>
+                <p class="value"><?php echo $count_completed; ?></p>
             </div>
         </section>
 
@@ -139,9 +140,9 @@ $upcoming = mysqli_query($conn, $upcoming_sql);
                         <strong>Add Test Result</strong>
                         <span>Upload lab or diagnostic findings</span>
                     </a>
-                    <a href="queries.php">
-                        <strong>Reply to Queries</strong>
-                        <span>Answer patient questions</span>
+                    <a href="treatment-plans.php">
+                        <strong>Treatment Plans</strong>
+                        <span>Create and manage patient care plans</span>
                     </a>
                 </div>
             </section>
@@ -155,6 +156,7 @@ document.getElementById('sdMenuBtn').addEventListener('click', function () {
     document.getElementById('sdSideFooter').classList.toggle('open');
 });
 </script>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>

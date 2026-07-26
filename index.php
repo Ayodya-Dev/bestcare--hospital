@@ -1,11 +1,72 @@
 <?php
-session_start();
+include __DIR__ . "/includes/public_session.php";
+include __DIR__ . "/includes/db.php";
 
 $img = "/bestcare-hospital/assets/home";
+$sv_img = "/bestcare-hospital/assets/services";
+$doc_img = "/bestcare-hospital/assets/doctors";
 
-$book_link = "/bestcare-hospital/auth/login.php";
-if (isset($_SESSION['user_id']) && $_SESSION['role'] == 'patient') {
-    $book_link = "/bestcare-hospital/patient/book-appointment.php";
+// Fallback images when no upload is set
+$service_fallbacks = array(
+    $sv_img . "/IMG_5.webp",
+    $sv_img . "/IMG_8.webp",
+    $sv_img . "/IMG_10.webp",
+    $sv_img . "/IMG_12.webp",
+    $sv_img . "/IMG_14.webp"
+);
+$service_icons = array(
+    $img . "/IMG_6.svg",
+    $img . "/IMG_9.svg",
+    $img . "/IMG_11.svg"
+);
+$doctor_fallbacks = array(
+    $doc_img . "/IMG_3.webp",
+    $doc_img . "/IMG_9.webp",
+    $doc_img . "/IMG_10.webp"
+);
+
+// Latest / first 3 services from DB
+$home_services = array();
+$svc_sql = "SELECT s.*, d.name AS department_name
+            FROM services s, departments d
+            WHERE s.department_id = d.id
+            ORDER BY s.name
+            LIMIT 3";
+$svc_result = mysqli_query($conn, $svc_sql);
+if ($svc_result) {
+    while ($row = mysqli_fetch_array($svc_result)) {
+        $home_services[] = $row;
+    }
+}
+
+// First 3 active doctors from DB
+$home_doctors = array();
+$doc_sql = "SELECT st.*, d.name AS department_name
+            FROM staff st, departments d, users u
+            WHERE st.department_id = d.id
+            AND st.user_id = u.id
+            AND u.role = 'staff'
+            AND u.is_active = 1
+            AND (st.staff_type = 'Doctor' OR st.staff_type IS NULL OR st.staff_type = '')
+            ORDER BY st.full_name
+            LIMIT 3";
+$doc_result = mysqli_query($conn, $doc_sql);
+if (!$doc_result) {
+    // Fallback if staff_type column missing
+    $doc_sql = "SELECT st.*, d.name AS department_name
+                FROM staff st, departments d, users u
+                WHERE st.department_id = d.id
+                AND st.user_id = u.id
+                AND u.role = 'staff'
+                AND u.is_active = 1
+                ORDER BY st.full_name
+                LIMIT 3";
+    $doc_result = mysqli_query($conn, $doc_sql);
+}
+if ($doc_result) {
+    while ($row = mysqli_fetch_array($doc_result)) {
+        $home_doctors[] = $row;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -18,41 +79,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] == 'patient') {
 </head>
 <body class="home-body">
 
-<!-- Header -->
-<header class="vh-header">
-    <div class="vh-header-inner">
-        <div class="vh-brand">
-            <div class="vh-brand-icon">
-                <img src="<?php echo $img; ?>/IMG_1.svg" alt="Logo">
-            </div>
-            <span class="vh-brand-name">BestCare Hospital</span>
-        </div>
-
-        <nav class="vh-nav">
-            <a href="/bestcare-hospital/index.php">Home</a>
-            <a href="/bestcare-hospital/services.php">Services</a>
-            <a href="/bestcare-hospital/doctors.php">Doctors</a>
-            <a class="vh-nav-search" href="/bestcare-hospital/search.php">
-                <img src="<?php echo $img; ?>/IMG_2.svg" alt="Search">
-                <span>Search</span>
-            </a>
-            <a href="/bestcare-hospital/contact.php">Contact</a>
-            <?php if (isset($_SESSION['user_id'])) { ?>
-                <?php if ($_SESSION['role'] == 'admin') { ?>
-                    <a href="/bestcare-hospital/admin/dashboard.php">Dashboard</a>
-                <?php } elseif ($_SESSION['role'] == 'staff') { ?>
-                    <a href="/bestcare-hospital/staff/dashboard.php">Dashboard</a>
-                <?php } else { ?>
-                    <a href="/bestcare-hospital/patient/dashboard.php">Dashboard</a>
-                <?php } ?>
-                <a href="/bestcare-hospital/auth/logout.php">Logout</a>
-            <?php } else { ?>
-                <a href="/bestcare-hospital/auth/login.php">Login</a>
-                <a href="/bestcare-hospital/auth/register.php">Register</a>
-            <?php } ?>
-        </nav>
-    </div>
-</header>
+<?php include __DIR__ . "/includes/public_header.php"; ?>
 
 <!-- Hero -->
 <section class="vh-hero">
@@ -81,7 +108,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] == 'patient') {
     </div>
 </section>
 
-<!-- Services -->
+<!-- Services (synced from database) -->
 <section class="vh-section vh-section-muted">
     <div class="home-wrap">
         <div class="vh-section-head">
@@ -90,41 +117,37 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] == 'patient') {
         </div>
 
         <div class="vh-grid-3">
-            <div class="vh-card">
-                <div class="vh-card-img">
-                    <img class="cover" src="<?php echo $img; ?>/IMG_5.webp" alt="Cardiology">
-                    <div class="vh-card-icon"><img src="<?php echo $img; ?>/IMG_6.svg" alt=""></div>
-                </div>
-                <div class="vh-card-body">
-                    <h3>Cardiology</h3>
-                    <p>Advanced heart care including diagnostics, non-invasive treatments, and surgical interventions by top specialists.</p>
-                    <a class="vh-btn-ghost" href="/bestcare-hospital/services.php">Learn More <img src="<?php echo $img; ?>/IMG_7.svg" alt=""></a>
-                </div>
-            </div>
-
-            <div class="vh-card">
-                <div class="vh-card-img">
-                    <img class="cover" src="<?php echo $img; ?>/IMG_8.webp" alt="Pediatrics">
-                    <div class="vh-card-icon"><img src="<?php echo $img; ?>/IMG_9.svg" alt=""></div>
-                </div>
-                <div class="vh-card-body">
-                    <h3>Pediatrics</h3>
-                    <p>Dedicated care for your little ones in a warm, friendly environment designed to make healthcare stress-free for kids.</p>
-                    <a class="vh-btn-ghost" href="/bestcare-hospital/services.php">Learn More <img src="<?php echo $img; ?>/IMG_7.svg" alt=""></a>
-                </div>
-            </div>
-
-            <div class="vh-card">
-                <div class="vh-card-img">
-                    <img class="cover" src="<?php echo $img; ?>/IMG_10.webp" alt="Surgery">
-                    <div class="vh-card-icon"><img src="<?php echo $img; ?>/IMG_11.svg" alt=""></div>
-                </div>
-                <div class="vh-card-body">
-                    <h3>Advanced Surgery</h3>
-                    <p>State-of-the-art surgical suites equipped with the latest robotic and minimally invasive medical technology.</p>
-                    <a class="vh-btn-ghost" href="/bestcare-hospital/services.php">Learn More <img src="<?php echo $img; ?>/IMG_7.svg" alt=""></a>
-                </div>
-            </div>
+            <?php
+            if (count($home_services) > 0) {
+                for ($i = 0; $i < count($home_services); $i++) {
+                    $s = $home_services[$i];
+                    if (isset($s['image_path']) && $s['image_path'] != '') {
+                        $photo = $s['image_path'];
+                    } else {
+                        $photo = $service_fallbacks[$i % count($service_fallbacks)];
+                    }
+                    $icon = $service_icons[$i % count($service_icons)];
+                    $desc = $s['description'];
+                    if (strlen($desc) > 140) {
+                        $desc = substr($desc, 0, 137) . "...";
+                    }
+                    ?>
+                    <div class="vh-card">
+                        <div class="vh-card-img">
+                            <img class="cover" src="<?php echo htmlspecialchars($photo); ?>" alt="<?php echo htmlspecialchars($s['name']); ?>">
+                            <div class="vh-card-icon"><img src="<?php echo $icon; ?>" alt=""></div>
+                        </div>
+                        <div class="vh-card-body">
+                            <h3><?php echo htmlspecialchars($s['name']); ?></h3>
+                            <p><?php echo htmlspecialchars($desc); ?></p>
+                        </div>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo '<p>No services available yet.</p>';
+            }
+            ?>
         </div>
 
         <div class="vh-center-link">
@@ -186,7 +209,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] == 'patient') {
     </div>
 </section>
 
-<!-- Doctors -->
+<!-- Doctors (synced from database) -->
 <section class="vh-section vh-section-muted">
     <div class="home-wrap">
         <div class="vh-section-head">
@@ -195,53 +218,37 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] == 'patient') {
         </div>
 
         <div class="vh-grid-3">
-            <div class="vh-doc-card">
-                <div class="vh-doc-photo"><img src="<?php echo $img; ?>/IMG_17.webp" alt="Dr. James Wilson"></div>
-                <div class="vh-doc-badge"><span>Senior Cardiologist</span></div>
-                <h3>Dr. James Wilson</h3>
-                <p class="exp">15+ Years Experience</p>
-                <div class="vh-stars">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <span>4.9</span>
-                </div>
-                <a class="vh-btn-doc" href="/bestcare-hospital/doctors.php">View Profile</a>
-            </div>
-
-            <div class="vh-doc-card">
-                <div class="vh-doc-photo"><img src="<?php echo $img; ?>/IMG_19.webp" alt="Dr. Sarah Mitchell"></div>
-                <div class="vh-doc-badge"><span>Pediatric Surgeon</span></div>
-                <h3>Dr. Sarah Mitchell</h3>
-                <p class="exp">12+ Years Experience</p>
-                <div class="vh-stars">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <span>4.8</span>
-                </div>
-                <a class="vh-btn-doc" href="/bestcare-hospital/doctors.php">View Profile</a>
-            </div>
-
-            <div class="vh-doc-card">
-                <div class="vh-doc-photo"><img src="<?php echo $img; ?>/IMG_20.webp" alt="Dr. David Chen"></div>
-                <div class="vh-doc-badge"><span>Neurologist</span></div>
-                <h3>Dr. David Chen</h3>
-                <p class="exp">18+ Years Experience</p>
-                <div class="vh-stars">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
-                    <span>5</span>
-                </div>
-                <a class="vh-btn-doc" href="/bestcare-hospital/doctors.php">View Profile</a>
-            </div>
+            <?php
+            if (count($home_doctors) > 0) {
+                for ($i = 0; $i < count($home_doctors); $i++) {
+                    $d = $home_doctors[$i];
+                    if (isset($d['image_path']) && $d['image_path'] != '') {
+                        $photo = $d['image_path'];
+                    } else {
+                        $photo = $doctor_fallbacks[$i % count($doctor_fallbacks)];
+                    }
+                    ?>
+                    <div class="vh-doc-card">
+                        <div class="vh-doc-photo"><img src="<?php echo htmlspecialchars($photo); ?>" alt="<?php echo htmlspecialchars($d['full_name']); ?>"></div>
+                        <div class="vh-doc-badge"><span><?php echo htmlspecialchars($d['specialization']); ?></span></div>
+                        <h3><?php echo htmlspecialchars($d['full_name']); ?></h3>
+                        <p class="exp"><?php echo htmlspecialchars($d['department_name']); ?></p>
+                        <div class="vh-stars">
+                            <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
+                            <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
+                            <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
+                            <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
+                            <img src="<?php echo $img; ?>/IMG_18.svg" alt="">
+                            <span>4.9</span>
+                        </div>
+                        <a class="vh-btn-doc" href="/bestcare-hospital/doctors.php">View Profile</a>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo '<p>No doctors available yet.</p>';
+            }
+            ?>
         </div>
     </div>
 </section>
@@ -261,65 +268,10 @@ if (isset($_SESSION['user_id']) && $_SESSION['role'] == 'patient') {
     </div>
 </section>
 
-<!-- Footer -->
-<footer class="vh-footer">
-    <div class="home-wrap">
-        <div class="vh-footer-grid">
-            <div>
-                <h4>Contact Us</h4>
-                <ul class="vh-footer-list">
-                    <li>
-                        <img src="<?php echo $img; ?>/IMG_21.svg" alt="">
-                        <span>Main Street, Matara, Sri Lanka</span>
-                    </li>
-                    <li>
-                        <img src="<?php echo $img; ?>/IMG_26.svg" alt="">
-                        <span>041-2223344</span>
-                    </li>
-                    <li>
-                        <img src="<?php echo $img; ?>/IMG_27.svg" alt="">
-                        <span>info@bestcarehospital.lk</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div>
-                <h4>Quick Links</h4>
-                <div class="vh-footer-links">
-                    <a href="<?php echo $book_link; ?>">Appointments</a>
-                    <a href="/bestcare-hospital/auth/login.php">Patient Portal</a>
-                    <a href="/bestcare-hospital/doctors.php">Find a Doctor</a>
-                    <a href="/bestcare-hospital/contact.php">Contact</a>
-                </div>
-            </div>
-
-            <div>
-                <h4>Hours</h4>
-                <div class="vh-hours-row"><span>Mon - Fri</span><span>8:00 AM - 8:00 PM</span></div>
-                <div class="vh-hours-row"><span>Sat - Sun</span><span>9:00 AM - 5:00 PM</span></div>
-                <div class="vh-hours-note">
-                    <img src="<?php echo $img; ?>/IMG_16.svg" alt="">
-                    <span>Emergency services available 24/7</span>
-                </div>
-            </div>
-
-            <div>
-                <h4>Follow Us</h4>
-                <div class="vh-social">
-                    <a href="#"><img src="<?php echo $img; ?>/IMG_22.svg" alt=""></a>
-                    <a href="#"><img src="<?php echo $img; ?>/IMG_23.svg" alt=""></a>
-                    <a href="#"><img src="<?php echo $img; ?>/IMG_24.svg" alt=""></a>
-                    <a href="#"><img src="<?php echo $img; ?>/IMG_25.svg" alt=""></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="vh-footer-bottom">
-            <p>&copy; 2026 BestCare Hospital. All rights reserved. | Privacy Policy | Terms of Service</p>
-        </div>
-    </div>
-</footer>
+<?php include __DIR__ . "/includes/public_footer.php"; ?>
 
 <script src="/bestcare-hospital/assets/js/main.js?v=5"></script>
+<?php mysqli_close($conn); ?>
+<script src="/bestcare-hospital/assets/js/flash.js?v=1"></script>
 </body>
 </html>
