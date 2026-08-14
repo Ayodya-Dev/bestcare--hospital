@@ -48,7 +48,7 @@ $count = count($rows);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Prescriptions - BestCare Hospital</title>
     <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=16">
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-records.css?v=2">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-records.css?v=4">
 </head>
 <body class="pd-body">
 
@@ -148,7 +148,7 @@ $count = count($rows);
                     $row = $rows[$i];
                     $search_blob = strtolower($row['medication'] . ' ' . $row['dosage'] . ' ' . $row['doctor_name']);
                     ?>
-                    <article class="pr-card" data-search="<?php echo htmlspecialchars($search_blob); ?>">
+                    <a class="pr-card" href="prescription-details.php?id=<?php echo (int)$row['id']; ?>" data-search="<?php echo htmlspecialchars($search_blob); ?>">
                         <div class="pr-date">
                             <span class="day"><?php echo date('D', strtotime($row['issued_date'])); ?></span>
                             <span class="full"><?php echo date('M d, Y', strtotime($row['issued_date'])); ?></span>
@@ -163,12 +163,18 @@ $count = count($rows);
                                 <?php } ?>
                             </p>
                             <span class="pr-label">Dosage</span>
-                            <p class="notes"><?php echo htmlspecialchars($row['dosage']); ?></p>
+                            <p class="notes"><?php
+                                $dose = $row['dosage'];
+                                if (strlen($dose) > 120) {
+                                    $dose = substr($dose, 0, 117) . '...';
+                                }
+                                echo htmlspecialchars($dose);
+                            ?></p>
                         </div>
                         <div class="pr-chevron">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
-                    </article>
+                    </a>
                 <?php } ?>
             </div>
             <p class="pr-help">Need help with your medications? Ask your doctor at the next visit.</p>

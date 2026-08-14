@@ -46,7 +46,7 @@ $count = count($rows);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Results - BestCare Hospital</title>
     <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=16">
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-records.css?v=2">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-records.css?v=4">
 </head>
 <body class="pd-body">
 
@@ -163,7 +163,7 @@ $count = count($rows);
                     $is_ok = (stripos($result_text, 'normal') !== false || stripos($result_text, 'no significant') !== false);
                     $search_blob = strtolower($row['test_name'] . ' ' . $result_text);
                     ?>
-                    <article class="pr-card" data-search="<?php echo htmlspecialchars($search_blob); ?>">
+                    <a class="pr-card" href="test-result-details.php?id=<?php echo (int)$row['id']; ?>" data-search="<?php echo htmlspecialchars($search_blob); ?>">
                         <div class="pr-date">
                             <span class="day"><?php echo date('D', strtotime($row['result_date'])); ?></span>
                             <span class="full"><?php echo date('M d, Y', strtotime($row['result_date'])); ?></span>
@@ -172,12 +172,18 @@ $count = count($rows);
                             <span class="pr-badge">Lab / Diagnostic</span>
                             <h3><?php echo htmlspecialchars($row['test_name']); ?></h3>
                             <span class="pr-label">Result</span>
-                            <p class="result-text<?php echo $is_ok ? ' ok' : ''; ?>"><?php echo htmlspecialchars($result_text); ?></p>
+                            <p class="result-text<?php echo $is_ok ? ' ok' : ''; ?>"><?php
+                                $preview = $result_text;
+                                if (strlen($preview) > 140) {
+                                    $preview = substr($preview, 0, 137) . '...';
+                                }
+                                echo htmlspecialchars($preview);
+                            ?></p>
                         </div>
                         <div class="pr-chevron">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
-                    </article>
+                    </a>
                 <?php } ?>
             </div>
 

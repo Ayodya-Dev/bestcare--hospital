@@ -78,7 +78,7 @@ if ($error != "") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Queries - BestCare Hospital</title>
     <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-dashboard.css?v=16">
-    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-queries.css?v=1">
+    <link rel="stylesheet" href="/bestcare-hospital/assets/css/patient-queries.css?v=2">
 </head>
 <body class="pd-body">
 
@@ -272,7 +272,7 @@ if ($error != "") {
                                     $time_part = date('h:i A', strtotime($created));
                                     $qid = 'Q-' . str_pad($row['id'], 4, '0', STR_PAD_LEFT);
                                     ?>
-                                    <tr class="pq-row" data-search="<?php echo htmlspecialchars(strtolower($row['subject'] . ' ' . $row['message'] . ' ' . $status_label)); ?>">
+                                    <tr class="pq-row pq-row-link" data-href="query-details.php?id=<?php echo (int)$row['id']; ?>" data-search="<?php echo htmlspecialchars(strtolower($row['subject'] . ' ' . $row['message'] . ' ' . $status_label)); ?>" tabindex="0" role="link">
                                         <td>
                                             <div class="pq-date">
                                                 <?php echo $date_part; ?><br>
@@ -286,6 +286,9 @@ if ($error != "") {
                                         </td>
                                         <td>
                                             <span class="pq-status <?php echo $status_class; ?>"><?php echo $status_label; ?></span>
+                                            <span class="pq-row-chevron" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                            </span>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -327,6 +330,20 @@ if (search) {
         }
         if (foot) {
             foot.textContent = 'Showing ' + shown + ' of ' + total + ' queries';
+        }
+    });
+}
+
+for (var i = 0; i < rows.length; i++) {
+    rows[i].addEventListener('click', function () {
+        var href = this.getAttribute('data-href');
+        if (href) window.location.href = href;
+    });
+    rows[i].addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            var href = this.getAttribute('data-href');
+            if (href) window.location.href = href;
         }
     });
 }

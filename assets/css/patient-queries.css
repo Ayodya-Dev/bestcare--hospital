@@ -311,6 +311,47 @@
     border-bottom: none;
 }
 
+.pq-row-link {
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.pq-row-link:hover {
+    background: #F6FDFB;
+}
+
+.pq-row-link td:last-child {
+    position: relative;
+    padding-right: 36px;
+}
+
+.pq-row-chevron {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    display: inline-flex;
+}
+
+.pq-row-chevron svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pq-row-link:hover .pq-row-chevron {
+    color: #017A4D;
+}
+
+.pq-detail-id {
+    margin: 0 0 6px;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #017A4D;
+    letter-spacing: 0.04em;
+}
+
 .pq-date {
     white-space: nowrap;
     color: #6B7280;
